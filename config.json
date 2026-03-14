@@ -1,0 +1,16 @@
+{
+  "name": "Image Viewer",
+  "slug": "dc_image_viewer",
+  "version": "1.0.0",
+  "description": "Visualiseur d'images Bottle",
+  "arch": ["aarch64"],
+  "startup": "services",
+  "boot": "auto",
+  "ingress": true,
+  "ingress_port": 8085,
+  "ports": {
+    "8085/tcp": 8085
+  },
+  "map": ["config:rw"],
+  "init": false
+}
