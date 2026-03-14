@@ -59,9 +59,10 @@ cards:
 
 ## Flux de développement
 Il est important de comprendre que cette procédure est liée à mon environnement de développement qui consiste en les éléments suivants:
-1- J'utilise Cursor dans mon MacBook Pro comme éditeur et gestionnaire de code source, etc.
-2- L'environnement de développement est une VM Debian dans mon MacBook
-3- L'environnement de production est mon serveur Home Assistant dans un Raspberry Pi 4
+
+1. J'utilise Cursor dans mon MacBook Pro comme éditeur et gestionnaire de code source, etc.
+2. L'environnement de développement est une VM Debian dans mon MacBook
+3. L'environnement de production est mon serveur Home Assistant dans un Raspberry Pi 4
 
 ```
 Cursor (macOS) → VM Debian ~/devel/ha-image-viewer → GitHub → HA (deploy.sh)
