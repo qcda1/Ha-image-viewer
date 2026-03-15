@@ -1,11 +1,13 @@
 #!/bin/bash
 # deploy.sh — Déploiement de ha-image-viewer depuis GitHub vers Home Assistant
-# Usage : ./deploy.sh [--no-restart]
+# Usage : ./deploy.sh [--rebuild] [--no-restart]
+#   --rebuild    : Force la reconstruction du conteneur Docker (nécessaire si Dockerfile ou image-viewer.py changé)
+#   --no-restart : Pull uniquement, sans redémarrer ni reconstruire
 
 set -e
 
-APPS_DIR=~/addons/dc_apps/image_viewer
-APPS_SLUG=local_dc_image_viewer
+ADDON_DIR=~/addons/dc_apps/image_viewer
+ADDON_SLUG=local_dc_image_viewer
 BRANCH=main
 
 echo "======================================"
@@ -13,12 +15,12 @@ echo "  Déploiement ha-image-viewer"
 echo "======================================"
 
 # Vérifier que le répertoire existe
-if [ ! -d "$APPS_DIR" ]; then
-    echo "❌ Répertoire $APPS_DIR introuvable"
+if [ ! -d "$ADDON_DIR" ]; then
+    echo "❌ Répertoire $ADDON_DIR introuvable"
     exit 1
 fi
 
-cd "$APPS_DIR"
+cd "$ADDON_DIR"
 
 # Vérifier que c'est bien un repo git
 if [ ! -d ".git" ]; then
@@ -35,22 +37,36 @@ fi
 # Pull depuis GitHub
 echo ""
 echo "📥 Récupération des dernières modifications depuis GitHub ($BRANCH)..."
-git checkout --
-git pull origin "$BRANCH"
+git checkout -- .
+git pull --no-edit origin "$BRANCH"
+chmod +x deploy.sh run.sh
 
 echo ""
 echo "📋 Derniers commits déployés :"
 git --no-pager log --oneline -5
 
-# Redémarrer l'application sauf si --no-restart
-if [ "$1" != "--no-restart" ]; then
-    echo ""
-    echo "🔄 Redémarrage de l'application $APPS_SLUG..."
-    ha apps restart "$APPS_SLUG"
-    echo "✅ Application redémarré"
-else
+# Rebuild ou restart selon l'option
+if [ "$1" == "--no-restart" ]; then
     echo ""
     echo "⏭️  Redémarrage ignoré (--no-restart)"
+
+elif [ "$1" == "--rebuild" ]; then
+    echo ""
+    echo "🔨 Reconstruction du conteneur Docker..."
+    ha addons rebuild "$ADDON_SLUG"
+    echo "✅ Reconstruction terminée"
+    echo ""
+    echo "🔄 Démarrage de l'addon $ADDON_SLUG..."
+    ha addons start "$ADDON_SLUG"
+    echo "✅ Addon démarré"
+
+else
+    echo ""
+    echo "🔄 Redémarrage de l'addon $ADDON_SLUG..."
+    ha addons restart "$ADDON_SLUG"
+    echo "✅ Addon redémarré"
+    echo ""
+    echo "💡 Si les changements ne sont pas visibles, relancez avec : ./deploy.sh --rebuild"
 fi
 
 echo ""
