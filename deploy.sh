@@ -4,8 +4,8 @@
 
 set -e
 
-ADDON_DIR=~/addons/dc_apps/image_viewer
-ADDON_SLUG=local_dc_image_viewer
+APPS_DIR=~/addons/dc_apps/image_viewer
+APPS_SLUG=local_dc_image_viewer
 BRANCH=main
 
 echo "======================================"
@@ -13,12 +13,12 @@ echo "  Déploiement ha-image-viewer"
 echo "======================================"
 
 # Vérifier que le répertoire existe
-if [ ! -d "$ADDON_DIR" ]; then
-    echo "❌ Répertoire $ADDON_DIR introuvable"
+if [ ! -d "$APPS_DIR" ]; then
+    echo "❌ Répertoire $APPS_DIR introuvable"
     exit 1
 fi
 
-cd "$ADDON_DIR"
+cd "$APPS_DIR"
 
 # Vérifier que c'est bien un repo git
 if [ ! -d ".git" ]; then
@@ -41,12 +41,12 @@ echo ""
 echo "📋 Derniers commits déployés :"
 git log --oneline -5
 
-# Redémarrer l'addon sauf si --no-restart
+# Redémarrer l'application sauf si --no-restart
 if [ "$1" != "--no-restart" ]; then
     echo ""
-    echo "🔄 Redémarrage de l'addon $ADDON_SLUG..."
-    ha addons restart "$ADDON_SLUG"
-    echo "✅ Addon redémarré"
+    echo "🔄 Redémarrage de l'application $APPS_SLUG..."
+    ha apps restart "$APPS_SLUG"
+    echo "✅ Application redémarré"
 else
     echo ""
     echo "⏭️  Redémarrage ignoré (--no-restart)"
