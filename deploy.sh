@@ -39,7 +39,7 @@ git pull origin "$BRANCH"
 
 echo ""
 echo "📋 Derniers commits déployés :"
-git log --oneline -5
+git --no-pager log --oneline -5
 
 # Redémarrer l'application sauf si --no-restart
 if [ "$1" != "--no-restart" ]; then
