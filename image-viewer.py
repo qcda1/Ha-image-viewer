@@ -19,7 +19,7 @@ sys.stdout.reconfigure(line_buffering=True)
 app = Bottle()
 
 # Configuration
-IMAGE_DIR = "/share/captures"
+IMAGE_DIR = "/config/www/captures"
 SUPPORTED_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp')
 
 
