@@ -63,12 +63,42 @@ Il est important de comprendre que cette procédure est liée à mon environneme
 1. J'utilise Cursor dans mon MacBook Pro comme éditeur et gestionnaire de code source, etc.
 2. L'environnement de développement est une VM Debian dans mon MacBook
 3. L'environnement de production est mon serveur Home Assistant dans un Raspberry Pi 4
-
 ```
 Cursor (macOS) → VM Debian ~/devel/ha-image-viewer → GitHub → HA (deploy.sh)
 ```
 
-### Modifier et déployer
+### Première installation sur HA
+
+1. Copiez les fichiers sources dans `~/addons/dc_apps/image_viewer` sur HA
+2. Initialisez le repo git local sur HA :
+
+```bash
+cd ~/addons/dc_apps/image_viewer
+git init
+git remote add origin https://github.com/qcda1/ha-image-viewer.git
+git pull origin main
+chmod +x deploy.sh
+```
+
+3. Dans HA : **Paramètres → Modules complémentaires → Boutique → ⋮ → Dépôts**
+4. Installez et démarrez l'addon **Image Viewer**
+
+### Mises à jour suivantes
+
+Après chaque `git push` depuis Cursor, déployez sur HA avec `deploy.sh` :
+
+```bash
+~/addons/dc_apps/image_viewer/deploy.sh
+```
+
+Le script effectue automatiquement `git pull` depuis GitHub puis redémarre l'addon.  
+Pour puller sans redémarrer :
+
+```bash
+~/addons/dc_apps/image_viewer/deploy.sh --no-restart
+```
+
+### Modifier et déployer — cycle quotidien
 
 1. Modifier les fichiers dans Cursor (connecté à la VM Debian via SSH Remote)
 2. Commit + Push via l'interface Git de Cursor (ou `git push`)
@@ -78,7 +108,8 @@ Cursor (macOS) → VM Debian ~/devel/ha-image-viewer → GitHub → HA (deploy.s
 ~/addons/dc_apps/image_viewer/deploy.sh
 ```
 
-## Navigation clavier
+## Utilisation
+### Navigation clavier
 
 | Touche | Action |
 |--------|--------|
@@ -87,7 +118,7 @@ Cursor (macOS) → VM Debian ~/devel/ha-image-viewer → GitHub → HA (deploy.s
 | Home | Retour à la dernière image |
 | F5 | Actualiser |
 
-## API
+### API
 
 | Endpoint | Description |
 |----------|-------------|
