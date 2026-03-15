@@ -11,8 +11,8 @@
 
 set -e
 
-ADDON_DIR=~/addons/dc_apps/image_viewer
-ADDON_SLUG=local_dc_image_viewer
+APP_DIR=~/addons/dc_apps/image_viewer
+APP_SLUG=local_dc_image_viewer
 BRANCH=main
 
 echo "======================================"
@@ -20,12 +20,12 @@ echo "  Déploiement ha-image-viewer"
 echo "======================================"
 
 # Vérifier que le répertoire existe
-if [ ! -d "$ADDON_DIR" ]; then
-    echo "❌ Répertoire $ADDON_DIR introuvable"
+if [ ! -d "$APP_DIR" ]; then
+    echo "❌ Répertoire $APP_DIR introuvable"
     exit 1
 fi
 
-cd "$ADDON_DIR"
+cd "$APP_DIR"
 
 # Vérifier que c'est bien un repo git
 if [ ! -d ".git" ]; then
@@ -58,18 +58,18 @@ if [ "$1" == "--no-restart" ]; then
 elif [ "$1" == "--rebuild" ]; then
     echo ""
     echo "🔨 Reconstruction du conteneur Docker..."
-    ha addons rebuild "$ADDON_SLUG"
+    ha apps rebuild "$APP_SLUG"
     echo "✅ Reconstruction terminée"
     echo ""
-    echo "🔄 Démarrage de l'addon $ADDON_SLUG..."
-    ha addons start "$ADDON_SLUG"
-    echo "✅ Addon démarré"
+    echo "🔄 Démarrage de l'addon $APP_SLUG..."
+    ha apps start "$APP_SLUG"
+    echo "✅ App démarré"
 
 else
     echo ""
-    echo "🔄 Redémarrage de l'addon $ADDON_SLUG..."
-    ha addons restart "$ADDON_SLUG"
-    echo "✅ Addon redémarré"
+    echo "🔄 Redémarrage de l'app $APP_SLUG..."
+    ha app restart "$APP_SLUG"
+    echo "✅ App redémarré"
     echo ""
     echo "💡 Si les changements ne sont pas visibles, relancez avec : ./deploy.sh --rebuild"
 fi
