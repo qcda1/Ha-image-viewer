@@ -4,6 +4,11 @@
 #   --rebuild    : Force la reconstruction du conteneur Docker (nécessaire si Dockerfile ou image-viewer.py changé)
 #   --no-restart : Pull uniquement, sans redémarrer ni reconstruire
 
+# Afin d'éviter les erreurs de changements locaux en faisant les chmod +x des scripts .sh
+# on peut désactiver le suivi des permissions dans git sur HA avec la commande:
+# git config core.fileMode false
+
+
 set -e
 
 ADDON_DIR=~/addons/dc_apps/image_viewer
@@ -37,8 +42,8 @@ fi
 # Pull depuis GitHub
 echo ""
 echo "📥 Récupération des dernières modifications depuis GitHub ($BRANCH)..."
-git checkout -- .
-git pull --no-edit origin "$BRANCH"
+git fetch origin
+git reset --hard origin/"$BRANCH"
 chmod +x deploy.sh run.sh
 
 echo ""
