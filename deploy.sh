@@ -35,6 +35,7 @@ fi
 # Pull depuis GitHub
 echo ""
 echo "📥 Récupération des dernières modifications depuis GitHub ($BRANCH)..."
+git checkout --
 git pull origin "$BRANCH"
 
 echo ""
