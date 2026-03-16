@@ -10,7 +10,7 @@ Pour ceux et celles qui commencent dans le développement d'applications HA, j'a
 Dans mon instance Home Assistant, j'ai une caméra Hikvision de laquelle je capture des images losqu'il y a du mouvement et les conserve dans un répertoire. Voyant qu'il n'y avait pas de carte dans HA qui affiche des images à partir d'un répertoire, j'ai créé cette app qui utilise une interface web et qui affiche les images du répertoire en question.
 
 ## Aperçu
-![Visualiseur d'images](docs/screenshot.png)
+![Visualiseur d'images](docs/img1.png)
 
 ## Fonctionnalités
 
