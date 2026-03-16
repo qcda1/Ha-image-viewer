@@ -3,8 +3,14 @@
 Visualiseur d'images pour Home Assistant, développé avec Python et Bottle.  
 Conçu pour afficher les captures d'une caméra de surveillance stockées dans `/config/www/captures`.
 
+Pour ceux et celles qui commencent dans le développement d'applications HA, j'ai documenté mon environnement de développement et le cycle d'entretien. Je suis débutant dans ce domaine particulier et j'ai tenté de garder ça simple.
+
 ## Historique
+
 Dans mon instance Home Assistant, j'ai une caméra Hikvision de laquelle je capture des images losqu'il y a du mouvement et les conserve dans un répertoire. Voyant qu'il n'y avait pas de carte dans HA qui affiche des images à partir d'un répertoire, j'ai créé cette app qui utilise une interface web et qui affiche les images du répertoire en question.
+
+## Aperçu
+![Visualiseur d'images](docs/screenshot.png)
 
 ## Fonctionnalités
 
@@ -16,6 +22,7 @@ Dans mon instance Home Assistant, j'ai une caméra Hikvision de laquelle je capt
 - Sans cache (toujours l'image la plus récente)
 - Compatible Home Assistant Ingress et accès direct par port
 - API JSON `/api/images` pour lister les images
+- Filtre pour sélectionner une caméra en particulier
 
 ## Architecture
 
@@ -58,11 +65,13 @@ cards:
 ```
 
 ## Flux de développement
+
 Il est important de comprendre que cette procédure est liée à mon environnement de développement qui consiste en les éléments suivants:
 
 1. J'utilise Cursor dans mon MacBook Pro comme éditeur et gestionnaire de code source, etc.
 2. L'environnement de développement est une VM Debian dans mon MacBook
 3. L'environnement de production est mon serveur Home Assistant dans un Raspberry Pi 4
+
 ```
 Cursor (macOS) → VM Debian ~/devel/ha-image-viewer → GitHub → HA (deploy.sh)
 ```
@@ -80,8 +89,8 @@ git pull origin main
 chmod +x deploy.sh
 ```
 
-3. Dans HA : **Paramètres → Modules complémentaires → Boutique → ⋮ → Dépôts**
-4. Installez et démarrez l'addon **Image Viewer**
+1. Dans HA : **Paramètres → Apps → Installer l'application
+2. Dans Magasin d'application, installer l'application Image Viewer qui devrait apparaître dans Local apps.
 
 ### Mises à jour suivantes
 
@@ -109,23 +118,34 @@ Pour puller sans redémarrer :
 ```
 
 ## Utilisation
+
+### La capture des images se fait à l'aide d'une automatisation HA déclenchée par un mouvement par exemple. L'automatisation effectue une capture et enregistre l'image avec le préfix cam123 où 123 est un numéro représentant la caméra. Dans image-viewer, la liste des préfixes est disponible pour soit consulter toutes les captures peu importe la caméra ou consulter que les captures d'une caméra spécifiquement.
+
 ### Navigation clavier
 
-| Touche | Action |
-|--------|--------|
-| ← | Image précédente (plus ancienne) |
-| → | Image suivante (plus récente) |
-| Home | Retour à la dernière image |
-| F5 | Actualiser |
+
+| Touche | Action                           |
+| ------ | -------------------------------- |
+| ←      | Image précédente (plus ancienne) |
+| →      | Image suivante (plus récente)    |
+| Home   | Retour à la dernière image       |
+| F5     | Actualiser                       |
+
+
+### Filtre
+
+Par défaut, toutes les images sont affichées selon la date/heure de la dernière modification peu importe le nom des fichiers. Si les fichiers de captures portent le nom commençant par camxxx où xxx est un numéro, l'utilisateur pourra spécifier la visualisation que pour la caméra choisi.
 
 ### API
 
-| Endpoint | Description |
-|----------|-------------|
-| `GET /` | Affiche la dernière image |
-| `GET /view/<index>` | Affiche l'image à l'index donné |
-| `GET /image/<index>` | Sert le fichier image brut |
-| `GET /api/images` | Liste JSON de toutes les images |
+
+| Endpoint             | Description                     |
+| -------------------- | ------------------------------- |
+| `GET /`              | Affiche la dernière image       |
+| `GET /view/<index>`  | Affiche l'image à l'index donné |
+| `GET /image/<index>` | Sert le fichier image brut      |
+| `GET /api/images`    | Liste JSON de toutes les images |
+
 
 ## Dépendances Python
 
