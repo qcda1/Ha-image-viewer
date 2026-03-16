@@ -119,7 +119,7 @@ Pour puller sans redémarrer :
 
 ## Utilisation
 
-### La capture des images se fait à l'aide d'une automatisation HA déclenchée par un mouvement par exemple. L'automatisation effectue une capture et enregistre l'image avec le préfix cam123 où 123 est un numéro représentant la caméra. Dans image-viewer, la liste des préfixes est disponible pour soit consulter toutes les captures peu importe la caméra ou consulter que les captures d'une caméra spécifiquement.
+La capture des images se fait à l'aide d'une automatisation HA déclenchée par un mouvement par exemple. L'automatisation effectue une capture et enregistre l'image avec le préfix cam123 où 123 est un numéro représentant la caméra. Dans image-viewer, la liste des préfixes est disponible pour soit consulter toutes les captures peu importe la caméra ou consulter que les captures d'une caméra spécifiquement.
 
 ### Navigation clavier
 
